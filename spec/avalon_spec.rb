@@ -3,21 +3,22 @@ require "spec_helper"
 describe Avalon do
   describe ".#validate" do
     it "should call Validator#validate" do
-      expect do
-        Avalon.validate("target", "not match")
-      end.to raise_error(Avalon::ValidationError)
+      Avalon::Validator.any_instance.should_receive(:validate)
+      Avalon.validate("target", "pattern")
     end
   end
 
   describe ".#valid?" do
     it "should call Validator#valid?" do
-      Avalon.valid?("target", "target").should be_true
+      Avalon::Validator.any_instance.should_receive(:valid?)
+      Avalon.valid?("target", "pattern")
     end
   end
 
   describe ".#valid?" do
     it "should call Validator#invalid?" do
-      Avalon.invalid?("target", "not match").should be_true
+      Avalon::Validator.any_instance.should_receive(:invalid?)
+      Avalon.invalid?("target", "pattern")
     end
   end
 end
