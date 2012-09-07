@@ -19,7 +19,6 @@ $ gem install avalon
 ```ruby
 require "avalon"
 
-
 Avalon.valid?("abc", /d/)   #=> false
 Avalon.invalid?("abc", /d/) #=> true
 Avalon.validate             #=> "abc" must match /d/ (Avalon::ValidationError)
