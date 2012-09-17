@@ -1,8 +1,9 @@
 module Avalon
   class Validator
-    def initialize(target, *patterns)
+    def initialize(target, *patterns, &block)
       @target   = target
       @patterns = patterns
+      @patterns << block if block_given?
     end
 
     def validate
@@ -22,7 +23,7 @@ module Avalon
 
     def check(pattern)
       if pattern.respond_to?(:call)
-        pattern.call(@target)
+        @target.instance_eval(&pattern)
       else
         pattern === @target
       end

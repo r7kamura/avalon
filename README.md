@@ -23,6 +23,8 @@ Avalon.valid?("abc", /d/)   #=> false
 Avalon.invalid?("abc", /d/) #=> true
 Avalon.validate("abc", /d/) #=> "abc" must match /d/ (Avalon::ValidationError)
 
+Avalon.valid?(:foo => "bar") { |target| target.has_key?(:foo) } #=> true
+Avalon.valid?(:foo => "bar") { has_key?(:foo) }                 #=> true
 
 class Calculator
   include Avalon
@@ -37,7 +39,6 @@ calculator = Calculator.new
 calculator.square(3)       #=> 9
 calculator.square("3")     #=> 9
 calculator.square("three") #=> "three" must match Fixnum or /^\d+$/ (Avalon::ValidationError)
-
 
 validator = Avalon::Validator.new("1", lambda {|x| x.respond_to?(:to_i) })
 validator.valid?   #=> true

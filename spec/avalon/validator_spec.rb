@@ -45,6 +45,10 @@ describe Avalon::Validator do
     end
 
     context "given Proc pattern" do
+      it "should evaluated in target's context" do
+        Avalon::Validator.new("target") { match(/target/) }.should be_valid
+      end
+
       context "when matched" do
         it do
           Avalon::Validator.new("target", proc {|x| x =~ /target/ }).should be_valid
@@ -55,6 +59,24 @@ describe Avalon::Validator do
         it do
           Avalon::Validator.new("target", proc {|x| x =~ /not match/ }).should_not be_valid
         end
+      end
+    end
+
+    context "given Block pattern" do
+      context "when matched" do
+        it do
+          Avalon::Validator.new("target") {|x| x =~ /target/ }.should be_valid
+        end
+      end
+
+      context "when not matched" do
+        it do
+          Avalon::Validator.new("target") {|x| x =~ /not match/ }.should_not be_valid
+        end
+      end
+
+      it "should evaluated in target's context" do
+        Avalon::Validator.new("target") { match(/target/) }.should be_valid
       end
     end
 
