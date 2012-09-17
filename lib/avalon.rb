@@ -5,14 +5,22 @@ module Avalon
   extend self
 
   def validate(*args, &block)
-    Validator.new(*args, &block).validate
+    delegate(:validate, *args, &block)
   end
 
   def valid?(*args, &block)
-    Validator.new(*args, &block).valid?
+    delegate(:valid?, *args, &block)
   end
 
   def invalid?(*args, &block)
-    Validator.new(*args, &block).invalid?
+    delegate(:invalid?, *args, &block)
+  end
+
+  private
+
+  # In the usage of include, use self as target if target is abbreviated
+  def delegate(method_name, *args, &block)
+    args.unshift(self) if args.empty? && block_given?
+    Validator.new(*args, &block).send(method_name)
   end
 end

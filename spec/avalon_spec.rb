@@ -21,4 +21,24 @@ describe Avalon do
       Avalon.invalid?("target", "pattern")
     end
   end
+
+  context "when included" do
+    let(:klass) do
+      Class.new do
+        include Avalon
+
+        def abc
+          "abc"
+        end
+      end
+    end
+
+    context "when not given target but given block" do
+      it "should take self as target of validation" do
+        expect do
+          klass.new.validate { abc =~ /def/ }
+        end.to raise_error(Avalon::ValidationError)
+      end
+    end
+  end
 end
